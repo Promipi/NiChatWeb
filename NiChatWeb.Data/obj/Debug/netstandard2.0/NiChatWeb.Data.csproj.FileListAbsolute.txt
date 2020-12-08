@@ -1,0 +1,9 @@
+G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\bin\Debug\netstandard2.0\NiChatWeb.Data.deps.json
+G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\bin\Debug\netstandard2.0\NiChatWeb.Data.dll
+G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\bin\Debug\netstandard2.0\NiChatWeb.Data.pdb
+G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.csprojAssemblyReference.cache
+G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.AssemblyInfoInputs.cache
+G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.AssemblyInfo.cs
+G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.csproj.CoreCompileInputs.cache
+G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.dll
+G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.pdb

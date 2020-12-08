@@ -9,7 +9,7 @@ namespace NiChatWeb.SERVER.Models
     {
         public int? FUser { get; set; }
         public int? Fchat { get; set; }
-        public int? DateJoin { get; set; }
+        public DateTime? DateJoin { get; set; }
         public int? Counter { get; set; }
 
         public virtual Chat FchatNavigation { get; set; }

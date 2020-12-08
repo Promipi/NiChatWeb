@@ -61,7 +61,7 @@ namespace NiChatWeb.SERVER.Models
                     .HasForeignKey(d => d.Fchat)
                     .HasConstraintName("fk_numeroChat");
 
-                entity.HasOne(d => d.FclientNavigation)
+                entity.HasOne(d => d.FuserNavigation)
                     .WithMany(p => p.Messages)
                     .HasForeignKey(d => d.FUser)
                     .HasConstraintName("fk_numeroUser");

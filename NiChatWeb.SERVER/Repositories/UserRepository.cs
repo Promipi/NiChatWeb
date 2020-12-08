@@ -6,24 +6,22 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using NiChatWeb.SERVER.Models;
 
-namespace NiChatWeb.SERVER.Services
+namespace NiChatWeb.SERVER.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository 
     {
         private SqlConnection _connection = new SqlConnection("Data Source=PROMIPC\\GESTIONPROMIPI;Initial Catalog=NiChatWeb;User ID=sa;Password=750timalta;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
-        public bool SaveUser(User user) //para introducir un nuevo usuario o cambiar sus datos
+        public bool InsertUser(User user) //para introducir un nuevo usuario o cambiar sus datos
         {
-            if(user.Id == 0) //si es nuevo el usuario
-            {
-                var query = @"INSERT INTO [dbo].[User] (Username,Gmail,Password)
-                            VALUES(@Username,@Gmail,@Password)"; //creamos el comando 
-                var result = _connection.Execute(query.ToString(),
-                    new User { Username = user.Username, Gmail = user.Gmail, Password = user.Password }); //lo ejecutamos
+            var query = @"INSERT INTO [dbo].[User] (Username,Gmail,Password)
+                        VALUES(@Username,@Gmail,@Password)"; //creamos el comando 
+            var result = _connection.Execute(query.ToString(),
+                new User { Username = user.Username, Gmail = user.Gmail, Password = user.Password }); //lo ejecutamos
 
+            if (result > 0) //si pudo introducir el registro
                 return true;
-            }
-            return false;
+            return false; //si no retornamos false
         }
 
         public bool DeleteUser(User user = null, int? id = null)

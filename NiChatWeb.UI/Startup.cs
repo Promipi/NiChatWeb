@@ -9,18 +9,21 @@ using NiChatWeb.UI.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace NiChatWeb.UI
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -28,7 +31,12 @@ namespace NiChatWeb.UI
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+
+            var httpClientHandler = new HttpClientHandler();
+            services.AddSingleton(new HttpClient(httpClientHandler)
+            {
+                BaseAddress = new Uri(Direc.ASP) //la uri para el servicio
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -90,7 +90,7 @@ using NiChatWeb.UI.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Shared\NavMenu.razor"
+#line 22 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 
@@ -100,10 +100,12 @@ using NiChatWeb.UI.Shared;
     {
         collapseNavMenu = !collapseNavMenu;
     }
+    protected
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private HttpClient Http { get; set; }
     }
 }
 #pragma warning restore 1591

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NiChatWeb.UI", "NiChatWeb.UI.csproj", "{4870EB46-062B-47A4-A1E7-AEBAC8D93131}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NiChatWeb.UI", "NiChatWeb.UI.csproj", "{4870EB46-062B-47A4-A1E7-AEBAC8D93131}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NiChatWeb.SERVER", "..\NiChatWeb.SERVER\NiChatWeb.SERVER.csproj", "{8F236821-796C-4F15-91E3-86D57EF94A53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NiChatWeb.Data", "..\NiChatWeb.Data\NiChatWeb.Data.csproj", "{5D6F03DF-DA41-472F-A2E7-3ACCCFA08AC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NiChatWeb.Data", "..\NiChatWeb.Data\NiChatWeb.Data.csproj", "{5D6F03DF-DA41-472F-A2E7-3ACCCFA08AC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

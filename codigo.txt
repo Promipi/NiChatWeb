@@ -1,0 +1,16 @@
+[HttpGet("id")]
+        public List<User> GetUserByChat(int id)
+        {
+            Response oRespuesta = new Response(); //creamos la respuesta del metodo
+            try
+            {
+                oRespuesta.Data = _userRepository.GetUsersByChat(id:id); //obtenemos la lista de usuarios en un chat determinado
+                oRespuesta.Success = 1;
+                return (List<User>)oRespuesta.Data; //devolvemos la lista de usuarios
+            }
+            catch (Exception ex)
+            {
+                oRespuesta.Message = ex.Message;
+            } 
+            return null;
+        }

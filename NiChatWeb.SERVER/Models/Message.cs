@@ -14,6 +14,6 @@ namespace NiChatWeb.SERVER.Models
         public DateTime? Creation { get; set; }
 
         public virtual Chat FchatNavigation { get; set; }
-        public virtual User FclientNavigation { get; set; }
+        public virtual User FuserNavigation { get; set; }
     }
 }

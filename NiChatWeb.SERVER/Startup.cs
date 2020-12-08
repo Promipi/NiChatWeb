@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NiChatWeb.SERVER.Models;
-using NiChatWeb.SERVER.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +57,7 @@ namespace NiChatWeb.SERVER
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                
             });
         }
     }

@@ -10,6 +10,7 @@ namespace NiChatWeb.SERVER.Models
         public Chat()
         {
             Messages = new HashSet<Message>();
+            UserChats = new HashSet<UserChat>();
         }
 
         public int Id { get; set; }
@@ -17,5 +18,6 @@ namespace NiChatWeb.SERVER.Models
         public DateTime? Creation { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<UserChat> UserChats { get; set; }
     }
 }

@@ -6,12 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using NiChatWeb.Data;
 
 namespace NiChatWeb.SERVER.Repositories
 {
     public class ChatRepository
     {
-        private SqlConnection _connection = new SqlConnection("Data Source=PROMIPC\\GESTIONPROMIPI;Initial Catalog=NiChatWeb;User ID=sa;Password=750timalta;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+        private SqlConnection _connection = new SqlConnection(Direc.SqlConnection);
         public bool InsertChat(Chat chat)
         {
             var query = @"INSERT INTO [dbo].[Chat] (Name,Creation) VALUES
@@ -52,7 +53,7 @@ namespace NiChatWeb.SERVER.Repositories
                 using(NiChatWebContext db = new NiChatWebContext() )
                 {
                     var chats = from chat in GetAllChats()
-                                join _union in db.UserChats on chat.Id equals _union.Fchat
+                                join _union in db.UserChats on chat.Id equals _union.FChat
                                 join _user in db.Users on _union.FUser equals _user.Id
                                 where _user.Id == idUser
                                 select chat; //selccionamos todos los chats que pertencezcan al id del usuario

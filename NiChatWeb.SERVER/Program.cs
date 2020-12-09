@@ -6,8 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NiChatWeb.SERVER.Models;
 
-namespace NiChatWeb.SERVER
+namespace NiChatWeb_SERVER
 {
     public class Program
     {

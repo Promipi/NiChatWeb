@@ -82,6 +82,20 @@ using NiChatWeb.UI.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.SERVER.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using System.Net.Http.Json;
+
+#line default
+#line hidden
+#nullable disable
     public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -90,9 +104,10 @@ using NiChatWeb.UI.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 22 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Shared\NavMenu.razor"
+#line 29 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
+    public List<Chat> Chats = new List<Chat>();
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -100,7 +115,19 @@ using NiChatWeb.UI.Shared;
     {
         collapseNavMenu = !collapseNavMenu;
     }
-    protected
+
+    protected async override Task OnInitializedAsync()
+    {
+        var option = new System.Text.Json.JsonSerializerOptions();
+
+
+        Chats = await Http.GetFromJsonAsync<List<Chat>>("/Chat");
+    }
+
+
+
+
+
 
 #line default
 #line hidden

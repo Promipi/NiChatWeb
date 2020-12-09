@@ -83,14 +83,22 @@ using NiChatWeb.UI.Shared;
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Pages\FetchData.razor"
-using NiChatWeb.UI.Data;
+#line 11 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.SERVER.Models;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/fetchdata")]
-    public partial class FetchData : Microsoft.AspNetCore.Components.ComponentBase
+#nullable restore
+#line 12 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using System.Net.Http.Json;
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/messenger")]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/messenger/{id:int}")]
+    public partial class Messenger : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -98,19 +106,38 @@ using NiChatWeb.UI.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 39 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Pages\FetchData.razor"
+#line 22 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Pages\Messenger.razor"
        
-    private WeatherForecast[] forecasts;
+    [Parameter]
+    public int id { get; set; } //el id del chat
+    public List<Message> Messages = new List<Message>();
+    Chat chatActual;
+    bool comenzado = false;
 
-    protected override async Task OnInitializedAsync()
+    public async void cargar()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        Messages = await Http.GetFromJsonAsync<List<Message>>("/Message");
+        comenzado = true;
+        StateHasChanged();
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+
+
+        using (NiChatWebContext db = new NiChatWebContext() )
+        {
+            chatActual = db.Chats.First(x => x.Id == id); //seleccionamos el chat
+        }
+
     }
 
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private WeatherForecastService ForecastService { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private HttpClient Http { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
 #pragma warning restore 1591

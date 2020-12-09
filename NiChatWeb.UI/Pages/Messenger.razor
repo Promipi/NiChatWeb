@@ -1,0 +1,47 @@
+﻿@page "/messenger"
+@page "/messenger/{id:int}"
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+
+<div>Te Encuentras en : @chatActual.Name </div>
+
+<button @onclick="cargar">CARGAR MENSAJES</button>
+
+@if(comenzado)
+{
+    @foreach(var m in Messages)
+    {
+        <div>@m.Body</div>
+    }
+}
+
+<div>
+    <input type="text" /> <button @onclick="SendMessage" >Enviar</button>
+</div>
+
+@code {
+    [Parameter]
+    public int id { get; set; } //el id del chat
+    public List<Message> Messages = new List<Message>();
+    Chat chatActual;
+    bool comenzado = false;
+
+    public async void cargar()
+    {
+        Messages = await Http.GetFromJsonAsync<List<Message>>("/Message");
+        comenzado = true;
+        StateHasChanged();
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+
+
+        using (NiChatWebContext db = new NiChatWebContext() )
+        {
+            chatActual = db.Chats.First(x => x.Id == id); //seleccionamos el chat
+        }
+
+    }
+}

@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using NiChatWeb.Data;
 using NiChatWeb.SERVER.Models;
 
 namespace NiChatWeb.SERVER.Repositories
 {
     public class UserRepository 
     {
-        private SqlConnection _connection = new SqlConnection("Data Source=PROMIPC\\GESTIONPROMIPI;Initial Catalog=NiChatWeb;User ID=sa;Password=750timalta;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+        private SqlConnection _connection = new SqlConnection(Direc.SqlConnection);
 
         public bool InsertUser(User user) //para introducir un nuevo usuario o cambiar sus datos
         {

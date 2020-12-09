@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NiChatWeb.Data\NiChatWeb.Data.csproj" />
   </ItemGroup>
 

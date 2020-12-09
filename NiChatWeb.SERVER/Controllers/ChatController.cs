@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NiChatWeb.SERVER.Models;
 using NiChatWeb.SERVER.Models.Response;
+using NiChatWeb.SERVER.Models;
 using NiChatWeb.SERVER.Repositories;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace NiChatWeb.SERVER.Controllers
         [HttpGet("/Chat")]
         public IActionResult GetAllChats()
         {
+            
             return Ok(_chatRepository.GetAllChats() ); //obtenemos todos los chats);
         }
         [HttpGet("/Chat/idUser")]

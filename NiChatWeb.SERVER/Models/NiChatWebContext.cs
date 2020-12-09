@@ -27,7 +27,7 @@ namespace NiChatWeb.SERVER.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=PROMIPC\\GESTIONPROMIPI; Database=NiChatWeb;User=sa;Password=750timalta;");
+                optionsBuilder.UseSqlServer("Server=Promipc\\GESTIONPROMIPI;Database=NiChatWeb;User=sa;Password=750timalta; ");
             }
         }
 
@@ -52,13 +52,13 @@ namespace NiChatWeb.SERVER.Models
 
                 entity.Property(e => e.Creation).HasColumnType("datetime");
 
-                entity.Property(e => e.Fchat).HasColumnName("FChat");
+                entity.Property(e => e.FChat).HasColumnName("FChat");
 
                 entity.Property(e => e.FUser).HasColumnName("FUser");
 
                 entity.HasOne(d => d.FchatNavigation)
                     .WithMany(p => p.Messages)
-                    .HasForeignKey(d => d.Fchat)
+                    .HasForeignKey(d => d.FChat)
                     .HasConstraintName("fk_numeroChat");
 
                 entity.HasOne(d => d.FuserNavigation)
@@ -84,23 +84,23 @@ namespace NiChatWeb.SERVER.Models
 
             modelBuilder.Entity<UserChat>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("User_Chat");
 
-                entity.Property(e => e.DateJoin).HasColumnName("Date_Join");
+                entity.Property(e => e.DateJoin)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Date_Join");
 
-                entity.Property(e => e.Fchat).HasColumnName("FChat");
+                entity.Property(e => e.FChat).HasColumnName("FChat");
 
                 entity.Property(e => e.FUser).HasColumnName("FUser");
 
                 entity.HasOne(d => d.FchatNavigation)
-                    .WithMany()
-                    .HasForeignKey(d => d.Fchat)
+                    .WithMany(p => p.UserChats)
+                    .HasForeignKey(d => d.FChat)
                     .HasConstraintName("fk_idChat");
 
                 entity.HasOne(d => d.FuserNavigation)
-                    .WithMany()
+                    .WithMany(p => p.UserChats)
                     .HasForeignKey(d => d.FUser)
                     .HasConstraintName("fk_idUser");
             });

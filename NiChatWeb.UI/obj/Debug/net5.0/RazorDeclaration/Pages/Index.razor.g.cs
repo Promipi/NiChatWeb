@@ -82,6 +82,20 @@ using NiChatWeb.UI.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.SERVER.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using System.Net.Http.Json;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Index : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -90,6 +104,44 @@ using NiChatWeb.UI.Shared;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 24 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Pages\Index.razor"
+      
+    public string texto;
+    public List<Message> Messages = new List<Message>();
+    public User User;
+
+    protected async override  Task OnInitializedAsync()
+    {
+        GetMessages();
+        using(NiChatWebContext db = new NiChatWebContext() )
+        {
+            User = db.Users.First(x => x.Id == 1);
+        }
+    }
+
+    public async void GetMessages()
+    {
+        Messages = await Http.GetFromJsonAsync<List<Message>>("/Message");
+    }
+
+    public async void Enviar()
+    {
+        await Http.PostAsJsonAsync<Message>("/Message",
+        (new Message { Body = texto, Creation = DateTime.Now, FChat = 1} )
+
+
+        ); //ingresamos el mensaje
+        GetMessages();
+        texto = "";
+        StateHasChanged();
+    }
+
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private HttpClient Http { get; set; }
     }
 }
 #pragma warning restore 1591

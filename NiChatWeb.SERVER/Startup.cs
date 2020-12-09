@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NiChatWeb.SERVER
+namespace NiChatWeb_SERVER
 {
     public class Startup
     {

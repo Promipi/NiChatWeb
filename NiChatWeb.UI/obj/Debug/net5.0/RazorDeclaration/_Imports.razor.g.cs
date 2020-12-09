@@ -82,6 +82,20 @@ using NiChatWeb.UI.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.SERVER.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using System.Net.Http.Json;
+
+#line default
+#line hidden
+#nullable disable
     public partial class _Imports : System.Object
     {
         #pragma warning disable 1998

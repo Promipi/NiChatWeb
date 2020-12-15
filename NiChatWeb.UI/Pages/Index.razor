@@ -1,55 +1,7 @@
 ﻿@page "/"
-@inject HttpClient Http
-
-<h1>Hello, world!</h1>
-
-Welcome to mensajerias
-
-<div>
-    <ul>
-        @foreach (var message in Messages)
-        {
-            <li>
-                @message.Body
-            </li>
-        }
-    </ul>
-    <div>
-        <input type="text" @bind="texto" />
-        <button @onclick="Enviar">Enviar</button>
-    </div>
-</div>
 
 
-@code{
-    public string texto;
-    public List<Message> Messages = new List<Message>();
-    public User User;
-
-    protected async override  Task OnInitializedAsync()
-    {
-        GetMessages();
-        using(NiChatWebContext db = new NiChatWebContext() )
-        {
-            User = db.Users.First(x => x.Id == 1);
-        }
-    }
-
-    public async void GetMessages()
-    {
-        Messages = await Http.GetFromJsonAsync<List<Message>>("/Message");
-    }
-
-    public async void Enviar()
-    {
-        await Http.PostAsJsonAsync<Message>("/Message",
-        (new Message { Body = texto, Creation = DateTime.Now, FChat = 1} )
-
-
-        ); //ingresamos el mensaje
-        GetMessages();
-        texto = "";
-        StateHasChanged();
-    }
+@code
+{
 
 }

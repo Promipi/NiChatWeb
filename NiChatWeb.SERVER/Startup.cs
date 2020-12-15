@@ -7,10 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NiChatWeb.SERVER.Hubs;
 using NiChatWeb.SERVER.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace NiChatWeb_SERVER
@@ -29,12 +31,19 @@ namespace NiChatWeb_SERVER
         {
 
             services.AddControllers();
-
+            services.AddSignalR();
+            services.AddSignalRCore();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "NiChatWeb.SERVER", Version = "v1" });
             });
-            
+            var httpClientHandler = new HttpClientHandler();
+            httpClientHandler.ServerCertificateCustomValidationCallback =
+                (message, cert, chain, errors) => true;
+            services.AddSingleton(new HttpClient(httpClientHandler)
+            {
+                BaseAddress = new Uri("https://192.168.1.114:8080") //la uri para el servicio
+            });
 
         }
 
@@ -57,6 +66,7 @@ namespace NiChatWeb_SERVER
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chathub");
                 
             });
         }

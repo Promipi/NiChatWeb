@@ -96,6 +96,27 @@ using System.Net.Http.Json;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 13 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.UI.Chat;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using Microsoft.AspNetCore.SignalR.Client;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.Data;
+
+#line default
+#line hidden
+#nullable disable
     public partial class MainLayout : LayoutComponentBase
     {
         #pragma warning disable 1998

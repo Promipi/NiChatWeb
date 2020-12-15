@@ -13,12 +13,23 @@ namespace NiChatWeb.SERVER.Repositories
     public class ChatRepository
     {
         private SqlConnection _connection = new SqlConnection(Direc.SqlConnection);
-        public bool InsertChat(Chat chat)
+        public bool InsertChat( UserChat joinChat)
         {
             var query = @"INSERT INTO [dbo].[Chat] (Name,Creation) VALUES
-                        (@Name,@Creation)";
-            var result = _connection.Execute(query.ToString(),
-                            new Chat {Name = chat.Name,Creation = chat.Creation }); //ejecutamos el comando
+                        (@Name,@Creation)"; //para insertar un chat
+
+            var newChat = new Chat { Name = joinChat.FchatNavigation.Name, Creation = DateTime.Now };
+            var result = _connection.Execute(query.ToString(), newChat); //ejecutamos el comando para crear el nuevo chat
+
+            var ultimoRegistroChat = "SELECT * FROM [dbo].[Chat] WHERE id=(SELECT max(id) FROM [dbo].[Chat])";
+            var ultimoChat = _connection.Query<Chat>(ultimoRegistroChat); //obtenemos el ultimo regstro
+
+            joinChat.FChat = ultimoChat.First().Id;
+
+            var queryJoin = @"INSERT INTO [dbo].[User_Chat] (FUser,FChat) VALUES
+                            (@FUser,@FChat)";
+            _connection.Execute(queryJoin, joinChat); //introducimos la union para que el usuario pertenezca a ese chat
+
             if (result > 0)
                 return true;
             return false;
@@ -64,7 +75,7 @@ namespace NiChatWeb.SERVER.Repositories
             return null;
         }
 
-        public Chat GetChat(int id)
+        public Chat GetChatById(int id)
         {
            using(NiChatWebContext db = new NiChatWebContext() )
            {

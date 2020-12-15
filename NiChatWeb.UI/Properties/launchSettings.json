@@ -2,9 +2,13 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/NiChatWeb.UI",
+      "sslPort": 0
+    },
     "iisExpress": {
-      "applicationUrl": "http://localhost:59051",
-      "sslPort": 44378
+      "applicationUrl": "http://192.168.1.114:5001",
+      "sslPort": 44335
     }
   },
   "profiles": {
@@ -22,7 +26,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
-      "applicationUrl": "https://localhost:8080;"
+      "applicationUrl": "http://192.168.1.114:5001"
     }
   }
 }

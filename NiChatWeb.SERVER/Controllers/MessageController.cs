@@ -21,20 +21,16 @@ namespace NiChatWeb.SERVER.Controllers
             return Ok(_messageRepository.GetAllMessages());
         }
 
-        [HttpGet("/Message/idChat")]
+        [HttpGet("chat")]
         public IActionResult GetAllMessagesByChat(int idChat)
         {
-
-
             return Ok(_messageRepository.GetAllMessagesByChat(idChat: idChat)); //retornamos todos los mensajes de un chat en especfico
         }
-        [HttpPost]
-        public IActionResult SendMessage( Message newMessage)
+        [HttpPost("send")]
+        public IActionResult SendMessageByChat(Message newMessage)
         {
             return Ok(_messageRepository.InsertMessage(newMessage,newMessage.FChat) ); //insertamos el nuevo mensaje
         }
-        
-       
     }
 
 }

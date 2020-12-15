@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NiChatWeb.SERVER.Models;
 using NiChatWeb.SERVER.Models.Response;
-using NiChatWeb.SERVER.Models;
 using NiChatWeb.SERVER.Repositories;
 using System;
 using System.Collections.Generic;
@@ -16,36 +15,41 @@ namespace NiChatWeb.SERVER.Controllers
     public class ChatController : ControllerBase
     {
         private ChatRepository _chatRepository = new ChatRepository();
-        #region HTTP GETS METODOS
 
-        [HttpGet("/Chat")]
+        [HttpGet]
         public IActionResult GetAllChats()
         {
-            
-            return Ok(_chatRepository.GetAllChats() ); //obtenemos todos los chats);
+            return Ok(_chatRepository.GetAllChats()); //obtenemos todos los chats);
         }
-        [HttpGet("/Chat/idUser")]
-        public IActionResult GetAllChatsByUser(int idUser)
-        {
 
-            return Ok(_chatRepository.GetAllChatsByUser(idUser:idUser)); //retornmao la lsita de chats del usuario
-        }
-        #endregion
-
-        [HttpPost]
-        public IActionResult InsertChat(Chat chat)
+        [HttpGet("user")]
+        public IActionResult GetChatsByUser(int id)
         {
-            return Ok(_chatRepository.InsertChat(chat) ); //insertamos el chat
+            return Ok(_chatRepository.GetAllChatsByUser(idUser: id)); //retornamos todos los chats de el usuario
         }
-        [HttpPut]
+
+        [HttpGet("specific")]
+        public IActionResult GetChat(int id)
+        {
+            return Ok(_chatRepository.GetChatById(id)); //retornamos el chat con ese id en esepcifico
+        }
+
+
+        [HttpPost("add")]
+        public IActionResult InsertChat( UserChat joinChat)
+        {
+            return Ok(_chatRepository.InsertChat(joinChat) ); //insertamos el chat
+        }
+
+        [HttpPut("update")]
         public IActionResult UpdateChat(Chat chat)
-        {    
-            return Ok(_chatRepository.UpdateChat(chat) ); //modificamos el chat);
+        {
+            return Ok(_chatRepository.UpdateChat(chat)); //modificamos el chat
         }
         [HttpDelete]
         public IActionResult DeleteChat(int id)
         {
-            return Ok(_chatRepository.DeleteChat(id: id) ); //eliminamos el chat especifico); //retornamos la respuesta
-        }
+            return Ok(_chatRepository.DeleteChat(id: id)); //eliminamos el chat especifico); //retornamos la respuesta
+        }   
     }
 }

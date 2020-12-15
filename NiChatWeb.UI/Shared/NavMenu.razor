@@ -1,5 +1,6 @@
 ﻿
 @inject HttpClient Http
+@inject HubConnection hubConnection
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">NiChatWeb.UI</a>
@@ -11,16 +12,21 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" href=""  Match="NavLinkMatch.All">
+                <span class="oi oi-play-circle"  aria-hidden="true"></span> Home
             </NavLink>
         </li>
-        @foreach (var chat in Chats)
+        @foreach (var chat in Chats) //recorremos los chats del usuario
         {
             <li class="nav-item px-3">
-                <a class="oi oi-chat"  href="messenger/@chat.Id">@chat.Name</a>          
+                    <a class="oi oi-chat"  href="messenger/@chat.Id">@chat.Name</a>            
             </li>
         }
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/chatForm" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span>Crear Chat
+            </NavLink>
+        </li>
 
 
     </ul>
@@ -29,6 +35,7 @@
 @code {
     private bool collapseNavMenu = true;
     public List<Chat> Chats = new List<Chat>();
+    public User Actual;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -39,14 +46,22 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var option = new System.Text.Json.JsonSerializerOptions();
+        var getUSerById = string.Format("/User/specific?id={0}", 1.ToString()); //para seleccionar el usuario
+        Actual = await Http.GetFromJsonAsync<User>(getUSerById); //obtenemos el usuario
+        await GetChats();
 
-
-        Chats = await Http.GetFromJsonAsync<List<Chat>>("/Chat");
+        hubConnection.StartAsync();
+        hubConnection.On<Chat>("ReceiveCreation", async (newChat) => //nos ponemos a la espera del metodo cuando se crea un nuevo chat
+        {
+            var result = await GetChats(); //para obtener ls chats
+        });
     }
 
-
-
-
-
+    public async Task<bool> GetChats() //para obtener la lista de chats
+    {
+        var getChatsByUser = string.Format("/Chat/user?id={0}", Actual.Id.ToString()); //para seleccionar los chats de ese usuario
+        Chats = await Http.GetFromJsonAsync<List<Chat>>(getChatsByUser); //y los obtenemos
+        await InvokeAsync(StateHasChanged); //para indicar que cambio un componente
+        return true; //retornamos que se completo la carga
+    }
 }

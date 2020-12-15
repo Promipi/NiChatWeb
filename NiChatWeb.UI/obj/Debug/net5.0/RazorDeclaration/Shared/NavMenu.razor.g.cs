@@ -96,6 +96,27 @@ using System.Net.Http.Json;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 13 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.UI.Chat;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using Microsoft.AspNetCore.SignalR.Client;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.Data;
+
+#line default
+#line hidden
+#nullable disable
     public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -104,10 +125,11 @@ using System.Net.Http.Json;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 29 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Shared\NavMenu.razor"
+#line 35 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
     public List<Chat> Chats = new List<Chat>();
+    public User Actual;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -118,20 +140,29 @@ using System.Net.Http.Json;
 
     protected async override Task OnInitializedAsync()
     {
-        var option = new System.Text.Json.JsonSerializerOptions();
+        var getUSerById = string.Format("/User/specific?id={0}", 1.ToString()); //para seleccionar el usuario
+        Actual = await Http.GetFromJsonAsync<User>(getUSerById); //obtenemos el usuario
+        await GetChats();
 
-
-        Chats = await Http.GetFromJsonAsync<List<Chat>>("/Chat");
+        hubConnection.StartAsync();
+        hubConnection.On<Chat>("ReceiveCreation", async (newChat) => //nos ponemos a la espera del metodo cuando se crea un nuevo chat
+        {
+            var result = await GetChats(); //para obtener ls chats
+        });
     }
 
-
-
-
-
+    public async Task<bool> GetChats() //para obtener la lista de chats
+    {
+        var getChatsByUser = string.Format("/Chat/user?id={0}", Actual.Id.ToString()); //para seleccionar los chats de ese usuario
+        Chats = await Http.GetFromJsonAsync<List<Chat>>(getChatsByUser); //y los obtenemos
+        await InvokeAsync(StateHasChanged); //para indicar que cambio un componente
+        return true; //retornamos que se completo la carga
+    }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private HubConnection hubConnection { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private HttpClient Http { get; set; }
     }
 }

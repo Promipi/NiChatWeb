@@ -28,9 +28,15 @@ namespace NiChatWeb.SERVER.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public IActionResult GetAllUsers() //para otener todos los usuarios
         { 
             return Ok(_userRepository.GetAllUsers() ); //obtenemos la lista);
+        }
+
+        [HttpGet("specific")]
+        public IActionResult GetUserById(int id)
+        {
+            return Ok(_userRepository.GetUserById(id)); //retornamos el usuario
         }
 
         

@@ -28,7 +28,6 @@ namespace NiChatWeb.SERVER.Repositories
             {
                 using(NiChatWebContext db = new NiChatWebContext() )
                 {
-                    var a = db.Messages.Where(x => x.FChat == idChat).ToList();
                     return db.Messages.Where(x => x.FChat == idChat).ToList(); //retornamos los menmsajes de ese chat
                 }
             }
@@ -56,26 +55,22 @@ namespace NiChatWeb.SERVER.Repositories
         {
             var query = @"Select Body,Creation from [dbo].[Messsage] 
                           WHERE Fchat = @idChat and FUser = @idUser";
-            var messages = _connection.Query<Message>(query.ToString(), new { });
+
+            var messages = _connection.Query<Message>(query.ToString(), new { }); //obtenemos los mensajes del usaurio
+
             return messages.ToList(); //retornamos la lista de mensajes en el chat especifico de un usuario especificos
         }
         /**/
 
         public bool InsertMessage( Message newMessage,int? idChat)
         {
-            using (NiChatWebContext db = new NiChatWebContext())
-            {
-                var chat = db.Chats.First(x => x.Id == idChat); //obtenemos el chat al que meteremos el mensaje
-
-                
-                newMessage.FChat = chat.Id; newMessage.FchatNavigation = chat; //establecemos en que chat estara
-               
-                
-                db.Messages.Add(newMessage); //anadmos el nuevo mensaje a la base de datos
-
-                db.SaveChanges(); //guardamos cambios
+            var query = @"INSERT INTO [dbo].[Message]  (FUser,FChat,Body,Creation)
+                          VALUES(@FUser,@FChat,@Body,@Creation)"; //comando para insertar el nuevo mensaaje
+            int result = _connection.Execute(query, new Message {
+                                FUser = newMessage.FUser, FChat = newMessage.FChat, Body = newMessage.Body, Creation = DateTime.Now });
+            if (result > 0) //si se logro insertar  retornaos true
                 return true;
-            }
+            return false;    
         }
         /**/
 

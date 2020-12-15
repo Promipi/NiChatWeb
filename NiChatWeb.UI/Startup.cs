@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,10 +34,17 @@ namespace NiChatWeb.UI
             services.AddServerSideBlazor();
 
             var httpClientHandler = new HttpClientHandler();
+            httpClientHandler.ServerCertificateCustomValidationCallback =
+                (message, cert, chain, errors) => true;
+
             services.AddSingleton(new HttpClient(httpClientHandler)
             {
                 BaseAddress = new Uri(Direc.ASP) //la uri para el servicio
             });
+
+            var hubConnection = new HubConnectionBuilder().WithUrl(Direc.HubConnection)
+                                  .Build(); //anadimos la conexion con el hubConnection
+            services.AddSingleton(hubConnection); //anadimos la conexion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

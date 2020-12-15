@@ -1,47 +1,78 @@
 ﻿@page "/messenger"
-@page "/messenger/{id:int}"
-@inject NavigationManager NavigationManager
+@page "/messenger/{idChat:int}"
+@inject NavigationManager Navigation
 @inject HttpClient Http
+@inject HubConnection hubConnection
 
-<div>Te Encuentras en : @chatActual.Name </div>
 
-<button @onclick="cargar">CARGAR MENSAJES</button>
-
-@if(comenzado)
+@if (ready) //si ya cargo los mensajes
 {
-    @foreach(var m in Messages)
-    {
-        <div>@m.Body</div>
-    }
+    <div>
+        <h1>Te Encuentras en @actualChat.Name</h1>
+        @foreach (var message in Messages)
+        {
+            <div>@message.Body</div>
+        }
+        <div>
+            <input type="text" @bind="newMessage" @onkeydown="ValueChanged"/><button @onclick="SendMessage">Enviar </button>
+        </div>
+    </div>
 }
 
-<div>
-    <input type="text" /> <button @onclick="SendMessage" >Enviar</button>
-</div>
+
+
 
 @code {
     [Parameter]
-    public int id { get; set; } //el id del chat
+    public int idChat { get; set; } //el id del chat
+
+    private Chat actualChat; //el chat actual donde nos ubicaremos
     public List<Message> Messages = new List<Message>();
-    Chat chatActual;
-    bool comenzado = false;
+    public string newMessage ="";
+    public ChatClient ChatClient;
+    public User ActualUser; //el usuario actual
+    bool ready = false; //para saber si ya cargo los mensajes
+    public int contador;
 
-    public async void cargar()
+
+    protected async override Task OnInitializedAsync() //cuando cargue la pantalla
     {
-        Messages = await Http.GetFromJsonAsync<List<Message>>("/Message");
-        comenzado = true;
-        StateHasChanged();
+        var getChatById = string.Format("/Chat/specific?id={0}", idChat.ToString()); //para obtener el chat con el id donde estamos
+        actualChat = await Http.GetFromJsonAsync<Chat>(getChatById); //obtenemos el chat
+
+        var getUSerById = string.Format("/User/specific?id={0}", 1.ToString()); //para seleccionar el usuario
+        ActualUser = await Http.GetFromJsonAsync<User>(getUSerById); //obtenemos el usuario
+
+
+        ChatClient = new ChatClient(ActualUser,out ready); ChatClient.StartAsync();
+
+        ChatClient.MessageReceivedEvent += MessageReceived;
+
+        ready = await GetMessages();
+
     }
 
-    protected async override Task OnInitializedAsync()
+
+    public async void MessageReceived(Message newMessage) //para cuando recibimos un mensaje
     {
-
-
-
-        using (NiChatWebContext db = new NiChatWebContext() )
-        {
-            chatActual = db.Chats.First(x => x.Id == id); //seleccionamos el chat
-        }
-
+        Messages.Add(newMessage);          //anadimos a la lista el mensaje recibido
+        await InvokeAsync(StateHasChanged);//indicamos que cambio un componente
     }
+
+    public async Task<bool> GetMessages() //para obtener los mensajes
+    {
+        var getMessagesByChat = string.Format("/Message/chat?idChat={0}", actualChat.Id.ToString()); //para obtener los mensajes del chat actual
+        Messages = await Http.GetFromJsonAsync<List<Message>>(getMessagesByChat); //pedimos los mensajes del chat actual
+        await InvokeAsync(StateHasChanged);
+        return true; //retornamos que ya cargo todos los mensajes
+    }
+
+    public void SendMessage()
+    {
+        Message messageSend = new Message { FChat = actualChat.Id, FUser = ActualUser.Id, Body = newMessage }; //creamos el nuevo mensaje
+        ChatClient.SendMessage(messageSend); //enviamos el mensaje para introducirla a la base de datos 
+        Messages.Add(messageSend);
+        newMessage = "";
+    }
+
 }

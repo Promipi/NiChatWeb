@@ -7,3 +7,12 @@ G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\D
 G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.csproj.CoreCompileInputs.cache
 G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.dll
 G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.pdb
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\bin\Debug\netstandard2.0\NiChatWeb.Data.deps.json
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\bin\Debug\netstandard2.0\NiChatWeb.Data.dll
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\bin\Debug\netstandard2.0\NiChatWeb.Data.pdb
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.csprojAssemblyReference.cache
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.AssemblyInfoInputs.cache
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.AssemblyInfo.cs
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.csproj.CoreCompileInputs.cache
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.dll
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.Data\obj\Debug\netstandard2.0\NiChatWeb.Data.pdb

@@ -96,8 +96,29 @@ using System.Net.Http.Json;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 13 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.UI.Chat;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using Microsoft.AspNetCore.SignalR.Client;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\_Imports.razor"
+using NiChatWeb.Data;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/messenger")]
-    [Microsoft.AspNetCore.Components.RouteAttribute("/messenger/{id:int}")]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/messenger/{idChat:int}")]
     public partial class Messenger : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -106,38 +127,72 @@ using System.Net.Http.Json;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 22 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Pages\Messenger.razor"
+#line 25 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Pages\Messenger.razor"
        
     [Parameter]
-    public int id { get; set; } //el id del chat
+    public int idChat { get; set; } //el id del chat
+
+    private Chat actualChat; //el chat actual donde nos ubicaremos
     public List<Message> Messages = new List<Message>();
-    Chat chatActual;
-    bool comenzado = false;
+    public string newMessage ="";
+    public ChatClient ChatClient;
+    public User ActualUser; //el usuario actual
+    bool ready = false; //para saber si ya cargo los mensajes
+    public int contador;
 
-    public async void cargar()
+    public async void ValueChanged()
     {
-        Messages = await Http.GetFromJsonAsync<List<Message>>("/Message");
-        comenzado = true;
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
+        Console.WriteLine(newMessage);
     }
 
-    protected async override Task OnInitializedAsync()
+    protected async override Task OnInitializedAsync() //cuando cargue la pantalla
     {
+        var getChatById = string.Format("/Chat/specific?id={0}", idChat.ToString()); //para obtener el chat con el id donde estamos
+        actualChat = await Http.GetFromJsonAsync<Chat>(getChatById); //obtenemos el chat
+
+        var getUSerById = string.Format("/User/specific?id={0}", 1.ToString()); //para seleccionar el usuario
+        ActualUser = await Http.GetFromJsonAsync<User>(getUSerById); //obtenemos el usuario
 
 
+        ChatClient = new ChatClient(ActualUser,out ready); ChatClient.StartAsync();
 
-        using (NiChatWebContext db = new NiChatWebContext() )
-        {
-            chatActual = db.Chats.First(x => x.Id == id); //seleccionamos el chat
-        }
+        ChatClient.MessageReceivedEvent += MessageReceived;
+
+        ready = await GetMessages();
 
     }
+
+
+    public async void MessageReceived(Message newMessage) //para cuando recibimos un mensaje
+    {
+        Messages.Add(newMessage);          //anadimos a la lista el mensaje recibido
+        await InvokeAsync(StateHasChanged);//indicamos que cambio un componente
+    }
+
+    public async Task<bool> GetMessages() //para obtener los mensajes
+    {
+        var getMessagesByChat = string.Format("/Message/chat?idChat={0}", actualChat.Id.ToString()); //para obtener los mensajes del chat actual
+        Messages = await Http.GetFromJsonAsync<List<Message>>(getMessagesByChat); //pedimos los mensajes del chat actual
+        await InvokeAsync(StateHasChanged);
+        return true; //retornamos que ya cargo todos los mensajes
+    }
+
+    public void SendMessage()
+    {
+        Message messageSend = new Message { FChat = actualChat.Id, FUser = ActualUser.Id, Body = newMessage }; //creamos el nuevo mensaje
+        ChatClient.SendMessage(messageSend); //enviamos el mensaje para introducirla a la base de datos 
+        Messages.Add(messageSend);
+        newMessage = "";
+    }
+
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private HubConnection hubConnection { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private HttpClient Http { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager Navigation { get; set; }
     }
 }
 #pragma warning restore 1591

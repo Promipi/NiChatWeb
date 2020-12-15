@@ -38,13 +38,24 @@ namespace NiChatWeb.SERVER.Repositories
             }
         }
 
-        public List<User> GetUsersByChat(Chat chat = null, int? id = null)
+        public User GetUserById(int? idUser = null)
         {
-            if(id != null)
+            if(idUser != null)
             {
-                var query = string.Format(@"SELECT Id,Username,Gmail,Password FROM [dbo].[User_Chat] uc
-                            INNER JOIN [dbo].[User] u ON u.Id =  uc.FUser WHERE u.Id = '{0}'
-                            ",id); //seleccionamos todos los usuarios que pertenzecan a ese id de chat
+                var query = string.Format("SELECT Id,Username,Gmail,Password FROM [dbo].[User] " +
+                                          "WHERE ID = {0} ", idUser); //selccionamos el usuario mediante su id
+                return _connection.QueryFirst<User>(query.ToString(), new { }); //retornamos el usuario
+            }
+            return null;
+        }
+
+        public List<User> GetUsersByChat(Chat chat = null, int? idChat = null)
+        {
+            if(idChat != null)
+            {
+                var query = string.Format(@"SELECT Id,Username,Gmail,Password FROM [dbo].[User_Chat] UC " +
+                            "INNER JOIN [dbo].[User] U ON U.Id =  UC.FUser WHERE UC.FChat = {0} ",idChat);
+                //seleccionamos todos los usuarios que pertenzecan a ese id de chat
 
                 return _connection.Query<User>(query.ToString(), new { }).ToList(); //retornamos los usuarios              
             }

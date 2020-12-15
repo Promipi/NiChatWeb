@@ -1,0 +1,37 @@
+﻿@page "/chatForm"
+@page "/chatForm/{id:int}"
+@inject NavigationManager Navigation
+@inject HttpClient Http
+@inject HubConnection hubConnection
+
+<h3>Chat Form</h3>
+
+<div>
+    <p>Nombre del Chat</p>
+    <input type="text" @bind="newChat.Name" />
+    <button @onclick="AddNewChat">Crear Chat</button>
+</div>
+
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    Chat newChat = new Chat();
+    User actualUser = new User();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var getUSerById = string.Format("/User/specific?id={0}", 1.ToString()); //para seleccionar el usuario
+        actualUser = await Http.GetFromJsonAsync<User>(getUSerById); //obtenemos el usuario
+    }
+
+    public async void AddNewChat() //cuardar
+    {
+        var createChat = "/chat/add";
+        var joinChat = new UserChat { FUser = actualUser.Id , FchatNavigation = newChat , FuserNavigation = actualUser };
+        var resultado = await Http.PostAsJsonAsync<UserChat>(createChat,joinChat); //llamamos al metodo para crear el nuevo chat
+        await hubConnection.SendAsync(Methods.CREATE,newChat); //decimos que se creo un chat
+        Navigation.NavigateTo("/"); //navegamos al incio
+    }
+}

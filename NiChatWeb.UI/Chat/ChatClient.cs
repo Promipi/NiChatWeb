@@ -17,7 +17,8 @@ namespace NiChatWeb.UI.Chat
         private HttpClient _http;          //la conexion con mi servicio rest
 
         public delegate void MessageEventHandler(Message message); //nuestro dlegado para crear un evento
-        public event MessageEventHandler MessageReceivedEvent; //el ele
+        public event MessageEventHandler MessageReceivedEvent; //para cuando reicbimos un mensaje
+        public event MessageEventHandler MessageDeletedEvent; //apra cuando eliminan un mensaje
 
         public ChatClient(User user,out bool ready)
         {
@@ -46,6 +47,14 @@ namespace NiChatWeb.UI.Chat
                 if(MessageReceivedEvent != null)
                 {
                     MessageReceivedEvent(message);
+                }
+            });
+
+            _connection.On<Message>("ReceiveDelete", (message) =>
+            {
+                if(MessageDeletedEvent != null)
+                {
+                    MessageDeletedEvent(message); //llamamos al etodo que apunta
                 }
             });
         }

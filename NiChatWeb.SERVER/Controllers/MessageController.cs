@@ -31,6 +31,11 @@ namespace NiChatWeb.SERVER.Controllers
         {
             return Ok(_messageRepository.InsertMessage(newMessage,newMessage.FChat) ); //insertamos el nuevo mensaje
         }
+        [HttpDelete]
+        public IActionResult DeleteMessageById(int id)
+        {
+            return (Ok(_messageRepository.DeleteMessageById(id))); //eliminamos el mensaje
+        }
     }
 
 }

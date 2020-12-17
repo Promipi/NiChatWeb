@@ -202,3 +202,5 @@ E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\obj\Deb
 E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\obj\Debug\net5.0\NiChatWeb.UI.genruntimeconfig.cache
 G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\obj\Debug\net5.0\RazorDeclaration\Pages\ChatForm.razor.g.cs
 G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\obj\Debug\net5.0\Razor\Pages\ChatForm.razor.g.cs
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\obj\Debug\net5.0\RazorDeclaration\Pages\ChatForm.razor.g.cs
+E:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\obj\Debug\net5.0\Razor\Pages\ChatForm.razor.g.cs

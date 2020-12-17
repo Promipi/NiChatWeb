@@ -73,7 +73,12 @@ namespace NiChatWeb.SERVER.Repositories
             return false;    
         }
         /**/
-
+        public bool DeleteMessageById(int id)
+        {
+            var query = $"DELETE FROM [dbo].[Message] WHERE Id = {id}";
+            int result = _connection.Execute(query);
+            return true;
+        }
 
 
     }

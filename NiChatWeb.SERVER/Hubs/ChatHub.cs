@@ -14,6 +14,11 @@ namespace NiChatWeb.SERVER.Hubs
             await Clients.Others.SendAsync("ReceiveMessage",newMessage); //todos los que estaban a la espera del metodo lo ejecutan
           
         } //y que todos los usuarios lo reciban
+
+        public async void DeleteMessage(Message messageDelete)
+        {
+            await Clients.All.SendAsync("ReceiveDelete", messageDelete); //todos los que estaban a la espera del metodo lo ejecutan
+        }
     
         public async void CreateChat(Chat newChat)
         {

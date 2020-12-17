@@ -127,24 +127,17 @@ using NiChatWeb.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 25 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Pages\Messenger.razor"
+#line 41 "G:\Programacion_General\Proyectos de programacion\NiChatWeb\NiChatWeb.UI\Pages\Messenger.razor"
        
-    [Parameter]
-    public int idChat { get; set; } //el id del chat
+    [Parameter]public int idChat { get; set; } //el id del chat
 
     private Chat actualChat; //el chat actual donde nos ubicaremos
     public List<Message> Messages = new List<Message>();
-    public string newMessage ="";
+    public Message newMessage { get; set; } = new Message();
     public ChatClient ChatClient;
     public User ActualUser; //el usuario actual
     bool ready = false; //para saber si ya cargo los mensajes
-    public int contador;
 
-    public async void ValueChanged()
-    {
-        await InvokeAsync(StateHasChanged);
-        Console.WriteLine(newMessage);
-    }
 
     protected async override Task OnInitializedAsync() //cuando cargue la pantalla
     {
@@ -155,9 +148,10 @@ using NiChatWeb.Data;
         ActualUser = await Http.GetFromJsonAsync<User>(getUSerById); //obtenemos el usuario
 
 
-        ChatClient = new ChatClient(ActualUser,out ready); ChatClient.StartAsync();
+        ChatClient = new ChatClient(ActualUser, out ready); ChatClient.StartAsync();
 
         ChatClient.MessageReceivedEvent += MessageReceived;
+        ChatClient.MessageDeletedEvent += MessageDeleted;
 
         ready = await GetMessages();
 
@@ -170,6 +164,16 @@ using NiChatWeb.Data;
         await InvokeAsync(StateHasChanged);//indicamos que cambio un componente
     }
 
+    public async void MessageDeleted(Message messageDeleted)
+    {
+        var ready = await GetMessages();
+        if(ready)
+        {
+            await InvokeAsync(StateHasChanged);//indicamos que cambio un componente
+        }
+
+    }
+
     public async Task<bool> GetMessages() //para obtener los mensajes
     {
         var getMessagesByChat = string.Format("/Message/chat?idChat={0}", actualChat.Id.ToString()); //para obtener los mensajes del chat actual
@@ -178,12 +182,27 @@ using NiChatWeb.Data;
         return true; //retornamos que ya cargo todos los mensajes
     }
 
-    public void SendMessage()
+    public void SendMessage() //para enviar un mensaje
     {
-        Message messageSend = new Message { FChat = actualChat.Id, FUser = ActualUser.Id, Body = newMessage }; //creamos el nuevo mensaje
-        ChatClient.SendMessage(messageSend); //enviamos el mensaje para introducirla a la base de datos 
-        Messages.Add(messageSend);
-        newMessage = "";
+        if(newMessage.Body != "")
+        {
+            Message messageSend = new Message { FChat = actualChat.Id, FUser = ActualUser.Id, Body = newMessage.Body }; //creamos el nuevo mensaje
+            ChatClient.SendMessage(messageSend); //enviamos el mensaje para introducirla a la base de datos
+            Messages.Add(messageSend);
+            newMessage.Body = "";
+        }
+
+    }
+
+    public async void DeleteMessage(int id)
+    {
+        var deleteMessage = $"/Message?id={id}";
+        await Http.DeleteAsync(deleteMessage); //eliminamos el mensaje
+
+        var messageDelete = Messages.First(x => x.Id == id); //seleccionamos el mensaje a eliminar
+
+        await hubConnection.SendAsync("DeleteMessage", messageDelete);
+        
     }
 
 
